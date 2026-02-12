@@ -1,27 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { CompanyHeader } from '@/components/company-header'
-import { LoginForm, type LoginData } from '@/components/login-form'
-
-import { ForgotPasswordModal } from '@/components/forgot-password-modal'
 import Link from 'next/link'
-export default function LoginPage() {
-  const [forgotPasswordOpen, setForgotPasswordOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+import { CompanyHeader } from '@/components/company-header'
+import { SignupForm, type SignupData } from '@/components/signup-form'
 
-  const handleLoginSubmit = async (data: LoginData) => {
+import { ChevronLeft } from 'lucide-react'
+
+export default function SignupPage() {
+  const [isLoading, setIsLoading] = useState(false)
+  const [submitSuccess, setSubmitSuccess] = useState(false)
+
+  const handleSignupSubmit = async (data: SignupData) => {
     setIsLoading(true)
-    console.log('Login attempt:', data)
+    console.log('Signup attempt:', data)
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500))
     setIsLoading(false)
-    // Handle successful login
-    alert(`Welcome! Login with ${data.cnicOrEmail}`)
-  }
-
-  const handleForgotPasswordClick = () => {
-    setForgotPasswordOpen(true)
+    setSubmitSuccess(true)
+    // Show success message
+    alert(`Account created successfully!\nEmail: ${data.email}\nCity: ${data.city}`)
+    // Reset form would go here in real app
   }
 
   return (
@@ -40,58 +39,61 @@ export default function LoginPage() {
       <div className="min-h-screen flex items-center justify-center pt-20 pb-6 px-4">
         <div className="w-full max-w-md">
           {/* Glass Card Container */}
-          <div className="glass-card p-8 md:p-10 space-y-8 rounded-3xl">
+          <div className="glass-card p-8 md:p-10 space-y-6 rounded-3xl">
             {/* Welcome Section */}
             <div className="text-center space-y-3">
               <h2 className="text-3xl md:text-4xl font-bold text-foreground text-balance">
-                Welcome Back
+                Create Account
               </h2>
               <p className="text-muted-foreground text-sm md:text-base">
-                Sign in to your account to continue
+                Join us and get started today
               </p>
             </div>
 
-            {/* Login Form */}
-            <div>
-              <LoginForm onSubmit={handleLoginSubmit} />
-              {/* Forgot Password Button */}
-              <button
-                onClick={handleForgotPasswordClick}
-                className="w-full mt-4 text-accent hover:text-accent/80 font-medium text-sm transition-colors"
-              >
-                Forgot Password?
-              </button>
+            {/* Signup Form */}
+            <SignupForm onSubmit={handleSignupSubmit} isLoading={isLoading} />
+
+            {/* Divider */}
+            <div className="relative py-4">
+              
+           
             </div>
 
-       
-            {/* Signup Link */}
+
+            {/* Login Link */}
             <div className="text-center pt-4 border-t border-white/10">
               <p className="text-muted-foreground text-sm">
-                Don't have an account?{' '}
+                Already have an account?{' '}
                 <Link
-                  href="/signup"
+                  href="/"
                   className="text-accent hover:text-accent/80 font-semibold transition-colors"
                 >
-                  Sign Up
+                  Sign In
                 </Link>
               </p>
             </div>
           </div>
 
+          {/* Back Button */}
+          <Link
+            href="/"
+            className="mt-8 flex items-center justify-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ChevronLeft size={18} />
+            Back to Login
+          </Link>
+
           {/* Footer Info */}
           <div className="mt-8 text-center space-y-2">
             <p className="text-xs text-muted-foreground">
-              By signing in, you agree to our Terms of Service
+              By signing up, you agree to our Terms of Service
             </p>
             <p className="text-xs text-muted-foreground">
-              © 2026 LIMS . All rights reserved.
+              © 2026 SecureAuth Enterprise. All rights reserved.
             </p>
           </div>
         </div>
       </div>
-
-      {/* Forgot Password Modal */}
-      <ForgotPasswordModal isOpen={forgotPasswordOpen} onClose={() => setForgotPasswordOpen(false)} />
     </div>
   )
 }
